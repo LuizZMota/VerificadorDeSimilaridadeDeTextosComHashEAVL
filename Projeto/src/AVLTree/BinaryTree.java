@@ -1,43 +1,36 @@
+//
+// Árvore AVL - Exemplo de implementação em Java
+// Copyright (C) 2024 André Kishimoto
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 package AVLTree;
 
-// imports para a fila que pode ser usada na levelOrderTraversalHelper(). 
+// imports para a fila usada na levelOrderTraversal(). 
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BinaryTree {
 
-	private BTNode root;
+	protected Node root;
 
 	public BinaryTree() {
 		this(null);
 	}
 
-	
-	public BTNode getRoot() {
-		return root;
-	}
-
-	public void isComplete(){
-		
-	}
-
-	public boolean isFull(){
-		return true;		
-	}
-
-	public boolean isFullHelper(BTNode node){
-		if(node.getDegree()==0){
-			return true;
-		} else if (node.getDegree()==2){
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public void setRoot(BTNode root) {
-		this.root = root;
-	}
-
-	public BinaryTree(BTNode root) {
+	public BinaryTree(Node root) {
 		this.root = root;
 	}
 
@@ -46,104 +39,156 @@ public class BinaryTree {
 	}
 
 	public int getDegree() {
-		return getDegreeHelper(root);
+		return getDegree(root);
 	}
 
-	private int getDegreeHelper(BTNode node) {
-		//TODO
-		if (node == null){
+	private int getDegree(Node node) {
+		if (node == null || node.isLeaf()) {
 			return 0;
-		} 
-		int currentDegree = 0;
-		if(node.getLeft()!=null){
-			currentDegree++;
 		}
-		if(node.getRight()!=null){
-			currentDegree++;
-		}
-		int leftDegree = getDegreeHelper(node.getLeft());
-    	int rightDegree = getDegreeHelper(node.getRight());
 
-		return Math.max(currentDegree, Math.max(leftDegree, rightDegree));
+		int degree = node.getDegree();
+		
+		if (node.hasLeftChild()) {
+			degree = Math.max(degree, getDegree(node.getLeft()));
+		}
+		
+		if (node.hasRightChild()) {
+			degree = Math.max(degree, getDegree(node.getRight()));
+		}
+		
+		return degree;
 	}
 
-	public int getHeight(BTNode node) {
-		if (node == null) {
+	public int getHeight() {
+		if (isEmpty()) {
 			return -1;
 		}
 
-		return 1 + Math.max(getHeight(node.getLeft()), getHeight(node.getRight()));
+		return root.getHeight();
 	}
 
 	public String inOrderTraversal() {
-		return inOrderTraversalHelper(root);
+		StringBuilder sb = new StringBuilder();
+		inOrderTraversal(sb, root);
+		return sb.toString();
 	}
 
-	private String inOrderTraversalHelper(BTNode node) {
+	private void inOrderTraversal(StringBuilder sb, Node node) {
 		if (node == null) {
-			return "";
+			return;
 		}
 
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append(postOrderTraversalHelper(node.getLeft()));
-		sb.append(node.getData() + " ");
-		sb.append(postOrderTraversalHelper(node.getRight()));
-		return sb.toString();
+		// Em ordem = percurso LNR.
+		inOrderTraversal(sb, node.getLeft());
+		sb.append(node + "\n");
+		inOrderTraversal(sb, node.getRight());
 	}
 
 	public String preOrderTraversal() {
-		return preOrderTraversalHelper(root);
+		StringBuilder sb = new StringBuilder();
+		preOrderTraversal(sb, root);
+		return sb.toString();
 	}
 
-	private String preOrderTraversalHelper(BTNode node) {
-		//TODO
+	private void preOrderTraversal(StringBuilder sb, Node node) {
 		if (node == null) {
-			return "";
+			return;
 		}
 
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append(node.getData() + " ");
-		sb.append(postOrderTraversalHelper(node.getLeft()));
-		sb.append(postOrderTraversalHelper(node.getRight()));
-		return sb.toString();
+		// Pré-ordem = percurso NLR.
+		sb.append(node + "\n");
+		preOrderTraversal(sb, node.getLeft());
+		preOrderTraversal(sb, node.getRight());
 	}
 
 	public String postOrderTraversal() {
-		return postOrderTraversalHelper(root);
+		StringBuilder sb = new StringBuilder();
+		postOrderTraversal(sb, root);
+		return sb.toString();
 	}
 
-	private String postOrderTraversalHelper(BTNode node) {
+	private void postOrderTraversal(StringBuilder sb, Node node) {
 		if (node == null) {
-			return "";
+			return;
 		}
 
-		StringBuilder sb = new StringBuilder();
+		// Pós-ordem = percurso LRN.
+		postOrderTraversal(sb, node.getLeft());
+		postOrderTraversal(sb, node.getRight());
+		sb.append(node + "\n");
+	}
+
+	public String levelOrderTraversal() {
+		if (isEmpty()) {
+			return "";
+		}
 		
-		sb.append(postOrderTraversalHelper(node.getLeft()));
-		sb.append(postOrderTraversalHelper(node.getRight()));
-		sb.append(node.getData() + " ");
+		StringBuilder sb = new StringBuilder();
+
+		Queue<Node> queue = new LinkedList<>();
+		queue.add(root);
+
+		while (!queue.isEmpty()) {
+			Node visited = queue.remove();
+			sb.append(visited + "\n");
+
+			if (visited.hasLeftChild()) {
+				queue.add(visited.getLeft());
+			}			
+			if (visited.hasRightChild()) {
+				queue.add(visited.getRight());
+			}
+		}
 		
 		return sb.toString();
 	}
 
-	/* public String levelOrderTraversal() {
-		return levelOrderTraversalHelper(root);
-	} */
-	
-	/* private String levelOrderTraversalHelper(BTNode node) {
-		//TODO
-	} */
+	// Apenas para uma exibição melhor da árvore.
+	public String inReversedOrderAscii() {
+		StringBuilder sb = new StringBuilder();
+		inReversedOrderAscii(sb, root);
+		return sb.toString();
+	}
+
+	private void inReversedOrderAscii(StringBuilder sb, Node node) {
+		if (node == null) {
+			return;
+		}
+
+		// Em ordem (invertida) = percurso RNL.
+
+		// R
+		if (!node.hasRightChild()) {
+			for (int i = 0; i < node.getLevel() + 1; ++i) {
+				sb.append("¦   ");
+			}
+			sb.append("├─» dir null\n");
+		}
+		inReversedOrderAscii(sb, node.getRight());
+
+		// N
+		for (int i = 0; i < node.getLevel(); ++i) {
+			sb.append("¦   ");
+		}
+		sb.append("├─» " + node.getData() + "\n");
+
+		// L
+		if (!node.hasLeftChild()) {
+			for (int i = 0; i < node.getLevel() + 1; ++i) {
+				sb.append("¦   ");
+			}
+			sb.append("├─» esq null\n");
+		}
+		inReversedOrderAscii(sb, node.getLeft());
+	}
 
 	@Override
 	public String toString() {
 		return "BinaryTree - isEmpty(): " + isEmpty()
 				+ ", getDegree(): " + getDegree()
-				+ ", getHeight(): " + getHeight(root)
+				+ ", getHeight(): " + getHeight()
 				+ ", root => { " + root + " }";				
 	}
-
-
 
 }

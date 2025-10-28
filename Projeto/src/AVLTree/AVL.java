@@ -1,182 +1,131 @@
+
 package AVLTree;
 
-public class AVL extends BST{
+public class AVL extends BST {
 
-    public AVL(BTNode root){
-        super(root);
-    }
+	public AVL() {
+		super();
+	}
 
-    public void insert(double data) {
-        setRoot(insertRec(getRoot(), data));
-    }
+	public AVL(Node root) {
+		super(root);
+	}
 
-    
-    public BTNode insertRec(BTNode no, double data){
-        if (no == null) {
-            return new BTNode(data);
-        }
+	@Override
+	protected Node insert(Node node, Node parent, int data) {
+		return balance(super.insert(node, parent, data));
+	}
+	
+	@Override
+	protected Node remove(Node node, int data) {
+		return balance(super.remove(node, data));
+	}
 
-        if(no.getData() > data){
-            no.setLeft(insertRec(no.getLeft(), data));
-            if (no.getLeft() != null) no.getLeft().setParent(no);
-        }else{
-            no.setRight(insertRec(no.getRight(), data));
-            if (no.getRight() != null) no.getRight().setParent(no);
-        }
+	private Node balance(Node node) {
+		if (node == null)
+			return null;
+		
+		int nodeBF = node.getBalanceFactor();
+		if (nodeBF < -1) {
+			if (node.getLeft().getBalanceFactor() <= 0) {
+				node = rotateRight(node);
+			} else {
+				node = rotateLeftRight(node);
+			}
+		} else if (nodeBF > 1) {
+			if (node.getRight().getBalanceFactor() >= 0) {
+				node = rotateLeft(node);
+			} else {
+				node = rotateRightLeft(node);
+			}
+		}
+		
+		return node;
+	}
 
-        updateBalance(no);
+	private void updateParentChild(Node parent, final Node child, Node newChild) {
+		if (parent != null) {
+			if (parent.getLeft() == child) {
+				parent.setLeft(newChild);
+			} else {
+				parent.setRight(newChild);
+			}
+		} else {
+			root = newChild;
+			newChild.setParent(null);
+		}
+	}
+	
+	private Node rotateLeft(Node node) {
+		if (node == null) {
+			return null;
+		}
+		
+		Node newRoot = node.getRight();
+		if (newRoot == null) {
+			return null;
+		}
+		
+		// Troca as conexões do nó pai (newRoot vira filho de parent, no lugar de node).
+		Node parent = node.getParent();
+		updateParentChild(parent, node, newRoot);
+		
+		// newRoot é a nova raiz desta subárvore, então seu filho esquerdo se torna o
+		// filho direito de node (que deixa de ser raiz desta subárvore).
+		Node left = newRoot.getLeft();
+		node.setRight(left);
 
-        if(no.getBalanceFactor() < -1 || no.getBalanceFactor() > 1){
-            no = balanceHelper(no);
-        }
+		// node agora vira filho esquerdo de newRoot.
+		newRoot.setLeft(node);
+		
+		return newRoot;
+	}
+	
+	// Rotação RR.
+	private Node rotateRight(Node node) {
+		if (node == null) {
+			return null;
+		}
+		
+		// O nó atual deve ter um filho esquerdo, que será a nova raiz desta subárvore.
+		Node newRoot = node.getLeft();
+		if (newRoot == null) {
+			return null;
+		}
+		
+		// Troca as conexões do nó pai (newRoot vira filho de parent, no lugar de node).
+		Node parent = node.getParent();
+		updateParentChild(parent, node, newRoot);
+		
+		// newRoot é a nova raiz desta subárvore, então seu filho direito se torna o
+		// filho esquerdo de node (que deixa de ser raiz desta subárvore).
+		Node right = newRoot.getRight();
+		node.setLeft(right);
+		
+		// node agora vira filho direito de newRoot.
+		newRoot.setRight(node);
+		
+		return newRoot;
+	}
+	
+	// Rotação LR.
+	private Node rotateLeftRight(Node node) {
+		node.setLeft(rotateLeft(node.getLeft()));
+		return rotateRight(node);
+	}
+	
+	// Rotação RL.
+	private Node rotateRightLeft(Node node) {
+		node.setRight(rotateRight(node.getRight()));
+		return rotateLeft(node);
+	}
+	
+	@Override
+	public String toString() {
+		return "AVL - isEmpty(): " + isEmpty()
+				+ ", getDegree(): " + getDegree()
+				+ ", getHeight(): " + getHeight()
+				+ ", root => { " + root + " }";				
+	}
 
-        return no;
-    }
-
-    public void delete(double data){
-        setRoot(delete(getRoot(), data));
-    }
-
-    
-    public BTNode delete(BTNode no, double data){
-        if(no == null){
-            return null;
-        }
-
-        if(no.getData() < data){
-            no.setRight(delete(no.getRight(), data));
-        }else if(no.getData() > data){
-            no.setLeft(delete(no.getLeft(), data));
-        }else{
-            if(no.isLeaf()){
-                return null;
-            }else if(no.getDegree() == 1){
-                if(no.getLeft() != null){
-                    return no.getLeft();
-                }else{
-                    return no.getRight();
-                }
-            }else {
-                BTNode temp = findMin(no.getRight());
-                no.setData(temp.getData());
-                no.setRight(delete(no.getRight(), temp.getData()));
-            }
-        }
-
-        updateBalance(no);
-
-
-        if(no.getBalanceFactor() < -1 || no.getBalanceFactor() > 1){
-            no = balanceHelper(no);
-        }
-
-        return no;
-    }
-
-    public BTNode balanceHelper(BTNode no){
-        if(no.getBalanceFactor() > 1){ //Desbalanceamento para o lado esquerdo
-            if(no.getLeft() != null && no.getLeft().getBalanceFactor() >= 0){
-                return rotateRight(no);
-            }else if(no.getLeft() != null && no.getLeft().getBalanceFactor() < 0){
-                return rotateLeftRight(no);
-            }
-        }
-
-        if(no.getBalanceFactor() < -1){ //Desbalanceamento para o lado direito
-            if(no.getRight() != null && no.getRight().getBalanceFactor() <= 0){
-                return rotateLeft(no);
-            }else if(no.getRight() != null && no.getRight().getBalanceFactor() > 0){
-                return rotateRightLeft(no);
-            }
-        }
-
-        return no;
-    }
-
-    //O parametro "no" é a raiz da subarvore que precisa ser balanceada
-    public BTNode rotateRight(BTNode no){
-        System.out.println("  [ROTAÇÃO SIMPLES À DIREITA no nó " + no.getData() + "]");
-        boolean ehraiz = no.isRoot();
-
-        BTNode esq = no.getLeft();
-        BTNode temp = esq.getRight();
-
-        no.setLeft(temp);
-        if(temp != null) temp.setParent(no);
-
-        esq.setRight(no);
-        no.setParent(esq);
-
-        updateBalance(no);
-        updateBalance(esq);
-
-        if(ehraiz){
-            setRoot(esq);
-        }
-
-        return esq;
-    }
-
-    public BTNode rotateLeft(BTNode no){
-        System.out.println("  [ROTAÇÃO SIMPLES À ESQUERDA no nó " + no.getData() + "]");
-        boolean ehraiz = no.isRoot();
-
-        BTNode dir = no.getRight();
-        BTNode temp = dir.getLeft();
-
-        no.setRight(temp);
-        if(temp != null) temp.setParent(no);
-
-        dir.setLeft(no);
-        no.setParent(dir);
-
-        updateBalance(no);
-        updateBalance(dir);
-        
-        if(ehraiz){
-            setRoot(dir);
-        }
-        return dir;
-    }
-
-    public BTNode rotateLeftRight(BTNode no){
-        System.out.println("  [ROTAÇÃO DUPLA: ESQUERDA-DIREITA no nó " + no.getData() + "]");
-        no.setLeft(rotateLeft(no.getLeft()));
-        return rotateRight(no);
-    }
-
-    public BTNode rotateRightLeft(BTNode no){
-        System.out.println("  [ROTAÇÃO DUPLA: DIREITA-ESQUERDA no nó " + no.getData() + "]");
-        no.setRight(rotateRight(no.getRight()));
-        return rotateLeft(no);
-    }
-
-    public int getHeight(BTNode no){
-        if(no == null){
-            return 0;
-        }
-
-        return 1 + Math.max(getHeight(no.getRight()), getHeight(no.getLeft()));
-    }
-
-    public int getBalance(BTNode no){ //Pega o fator de balanceamento
-        return getHeight(no.getLeft()) - getHeight(no.getRight());
-    }
-
-    public void updateBalance(BTNode no){ //Atualiza o fator de Balanceamento
-        no.setBalanceFactor(getBalance(no));
-    }
-
-    public void detalhesAVL(BTNode node) {
-        if (node != null) {
-            System.out.println("  Nó " + node.getData() + ": Pai=" + 
-                (node.getParent() != null ? node.getParent().getData() : "null") +
-                ", Esq=" + (node.getLeft() != null ? node.getLeft().getData() : "null") + 
-                ", Dir=" + (node.getRight() != null ? node.getRight().getData() : "null") + 
-                ", FB=" + node.getBalanceFactor());
-            
-            detalhesAVL(node.getLeft());
-            detalhesAVL(node.getRight());
-        }
-    }
 }

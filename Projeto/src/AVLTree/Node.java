@@ -3,7 +3,7 @@ package AVLTree;
 
 public class Node {
 
-	protected int data;
+	protected double data;
 	private int balanceFactor;
 	protected Node parent;
 	protected Node left;
@@ -13,11 +13,11 @@ public class Node {
 		this(0, null);
 	}
 
-	public Node(int data) {
+	public Node(double data) {
 		this(data, null);
 	}
 
-	public Node(int data, Node parent) {
+	public Node(double data, Node parent) {
 		this.data = data;
 		this.balanceFactor = 0;
 		this.parent = parent;
@@ -25,11 +25,11 @@ public class Node {
 		this.right = null;
 	}
 
-	public int getData() {
+	public double getData() {
 		return data;
 	}
 
-	public void setData(int data) {
+	public void setData(double data) {
 		this.data = data;
 	}
 

@@ -12,12 +12,12 @@ public class AVL extends BST {
 	}
 
 	@Override
-	protected Node insert(Node node, Node parent, int data) {
+	protected Node insert(Node node, Node parent, double data) {
 		return balance(super.insert(node, parent, data));
 	}
 	
 	@Override
-	protected Node remove(Node node, int data) {
+	protected Node remove(Node node, double data) {
 		return balance(super.remove(node, data));
 	}
 
@@ -66,55 +66,43 @@ public class AVL extends BST {
 			return null;
 		}
 		
-		// Troca as conexões do nó pai (newRoot vira filho de parent, no lugar de node).
 		Node parent = node.getParent();
 		updateParentChild(parent, node, newRoot);
 		
-		// newRoot é a nova raiz desta subárvore, então seu filho esquerdo se torna o
-		// filho direito de node (que deixa de ser raiz desta subárvore).
 		Node left = newRoot.getLeft();
 		node.setRight(left);
 
-		// node agora vira filho esquerdo de newRoot.
 		newRoot.setLeft(node);
 		
 		return newRoot;
 	}
 	
-	// Rotação RR.
 	private Node rotateRight(Node node) {
 		if (node == null) {
 			return null;
 		}
 		
-		// O nó atual deve ter um filho esquerdo, que será a nova raiz desta subárvore.
 		Node newRoot = node.getLeft();
 		if (newRoot == null) {
 			return null;
 		}
 		
-		// Troca as conexões do nó pai (newRoot vira filho de parent, no lugar de node).
 		Node parent = node.getParent();
 		updateParentChild(parent, node, newRoot);
 		
-		// newRoot é a nova raiz desta subárvore, então seu filho direito se torna o
-		// filho esquerdo de node (que deixa de ser raiz desta subárvore).
 		Node right = newRoot.getRight();
 		node.setLeft(right);
 		
-		// node agora vira filho direito de newRoot.
 		newRoot.setRight(node);
 		
 		return newRoot;
 	}
 	
-	// Rotação LR.
 	private Node rotateLeftRight(Node node) {
 		node.setLeft(rotateLeft(node.getLeft()));
 		return rotateRight(node);
 	}
 	
-	// Rotação RL.
 	private Node rotateRightLeft(Node node) {
 		node.setRight(rotateRight(node.getRight()));
 		return rotateLeft(node);

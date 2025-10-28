@@ -1,21 +1,3 @@
-//
-// Árvore AVL - Exemplo de implementação em Java
-// Copyright (C) 2024 André Kishimoto
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
-//
-
 package AVLTree;
 
 public class BST extends BinaryTree {
@@ -28,16 +10,16 @@ public class BST extends BinaryTree {
 		super(root);
 	}
 
-	public Node search(int data) {
+	public Node search(double data) {
 		return search(root, data);
 	}
 
-	private Node search(Node node, int data) {
+	private Node search(Node node, double data) {
 		if (node == null) {
 			return null;
 		}
 		
-		int diff = data - node.getData();
+		double diff = data - node.getData();
 
 		if (diff < 0) {
 			return search(node.getLeft(), data);
@@ -48,41 +30,39 @@ public class BST extends BinaryTree {
 		}
 	}
 	
-	public void insert(int data) {
+	public void insert(double data) {
 		root = insert(root, null, data);
 	}
 	
-	protected Node insert(Node node, Node parent, int data) {
+	protected Node insert(Node node, Node parent, double data) {
 		if (node == null) {
 			return new Node(data, parent);
 		}
 
-		int diff = data - node.getData();
+		double diff = data - node.getData();
 		
 		if (diff < 0) {
 			node.setLeft(insert(node.getLeft(), node, data));
 		} else if (diff > 0) {
 			node.setRight(insert(node.getRight(), node, data));
 		} else {
-			// Nessa implementação, não é permitida a inserção de duplicatas na BST.
-			// Portanto, não fazemos nada (esse else pode inclusive ser removido...).
-			throw new RuntimeException("Essa BST não pode ter duplicatas!");
+			
 		}
 		
 		return node;
 	}
 	
-	public void remove(int data) {
+	public void remove(double data) {
 		root = remove(root, data);
 	}
 	
-	protected Node remove(Node node, int data) {
+	protected Node remove(Node node, double data) {
 		if (node == null) {
 			//return null;
 			throw new RuntimeException("Nó com chave " + data + " não existe na BST!");
 		}
 		
-		int diff = data - node.getData();
+		double diff = data - node.getData();
 				
 		if (diff < 0) {
 			node.setLeft(remove(node.getLeft(), data));
@@ -143,7 +123,7 @@ public class BST extends BinaryTree {
 		return node;
 	}
 	
-	public Node findPredecessor(int data) {
+	public Node findPredecessor(double data) {
 		Node node = search(data);
 		return predecessor(node);
 	}
@@ -168,7 +148,7 @@ public class BST extends BinaryTree {
 		}
 	}
 	
-	public Node findSuccessor(int data) {
+	public Node findSuccessor(double data) {
 		Node node = search(data);
 		return successor(node);		
 	}
@@ -202,7 +182,6 @@ public class BST extends BinaryTree {
 			return null;
 		}
 
-		// Pós-ordem = percurso LRN.
 		node.setLeft(clear(node.getLeft()));
 		node.setRight(clear(node.getRight()));
 		node.setParent(null);

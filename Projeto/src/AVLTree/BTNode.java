@@ -23,7 +23,7 @@ public class BTNode {
 		this.right = null;
 	}
 
-	public int getBalanceFactor(){
+	public double getBalanceFactor(){
 		return this.balanceFactor;
 	}
 

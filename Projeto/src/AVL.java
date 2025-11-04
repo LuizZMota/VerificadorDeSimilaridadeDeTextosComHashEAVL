@@ -1,6 +1,4 @@
 
-package AVLTree;
-
 public class AVL {
 
 	protected Node root;
@@ -22,7 +20,7 @@ public class AVL {
 			return new Node(data, parent, resultado);
 		}
 
-		int diff = data - node.getData();
+		double diff = data - node.getData();
 		
 		if (diff < 0) {
 			node.setLeft(insert(node.getLeft(), node, data, resultado));

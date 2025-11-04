@@ -1,9 +1,12 @@
 
 package AVLTree;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Node {
 
 	protected double data;
+	public List<Resultado> resultados;
 	private int balanceFactor;
 	protected Node parent;
 	protected Node left;
@@ -16,9 +19,13 @@ public class Node {
 	public Node(double data) {
 		this(data, null);
 	}
+	public List<Resultado> getResultados(){
+		return this.resultados;
+	}
 
-	public Node(double data, Node parent) {
+	public Node(double data, Node parent, Resultado resultados) {
 		this.data = data;
+		this.resultados = new ArrayList<>();
 		this.balanceFactor = 0;
 		this.parent = parent;
 		this.left = null;

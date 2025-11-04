@@ -1,7 +1,7 @@
 
 package AVLTree;
 
-public class AVL extends BST {
+public class AVL {
 
 	protected Node root;
 
@@ -13,70 +13,30 @@ public class AVL extends BST {
 		this.root = root;
 	}
 
-	public Node insert(Node node, Node parent, double data) {
-		return balance(insert(node, parent, data));
+	public Node insert(Node node, Node parent, double data, Resultado resultado) {
+		return balance(insert(node, parent, data, resultado));
 	}
 
-	protected Node insert(Node node, Node parent, int data) {
+	protected Node insert(Node node, Node parent, int data, Resultado resultado) {
 		if (node == null) {
-			return new Node(data, parent);
+			return new Node(data, parent, resultado);
 		}
 
 		int diff = data - node.getData();
 		
 		if (diff < 0) {
-			node.setLeft(insert(node.getLeft(), node, data));
+			node.setLeft(insert(node.getLeft(), node, data, resultado));
 		} else if (diff > 0) {
-			node.setRight(insert(node.getRight(), node, data));
+			node.setRight(insert(node.getRight(), node, data, resultado));
 		} else {
-			// Nessa implementação, não é permitida a inserção de duplicatas na BST.
-			// Portanto, não fazemos nada (esse else pode inclusive ser removido...).
-			throw new RuntimeException("Essa BST não pode ter duplicatas!");
+			node.getResultados().add(resultado);
+			return node;
 		}
 		
 		return node;
 	}
 	
-	public Node remove(Node node, double data) {
-		return balance(remove(node, data));
-	}
-
-	protected Node remove(Node node, int data) {
-		if (node == null) {
-			//return null;
-			throw new RuntimeException("Nó com chave " + data + " não existe na BST!");
-		}
-		
-		int diff = data - node.getData();
-				
-		if (diff < 0) {
-			node.setLeft(remove(node.getLeft(), data));
-		} else if (diff > 0) {
-			node.setRight(remove(node.getRight(), data));
-		} else {
-			node = removeNode(node);
-		}
-		
-		return node;		
-	}
 	
-	private Node removeNode(Node node) {
-		if (node.isLeaf()) {
-			return null;
-		}
-		
-		if (!node.hasLeftChild()) {
-			return node.getRight();
-		} else if (!node.hasRightChild()) {
-			return node.getLeft();
-		} else {
-			Node predecessor = findPredecessor(node.getData());
-			node.setData(predecessor.getData());
-			node.setLeft(remove(node.getLeft(), predecessor.getData()));
-		}
-		
-		return node;		
-	}
 	private Node balance(Node node) {
 		if (node == null)
 			return null;

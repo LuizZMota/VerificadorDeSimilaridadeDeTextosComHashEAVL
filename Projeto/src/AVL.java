@@ -12,16 +12,29 @@ public class AVL {
 	}
 
 	public Node insert(Node node, Node parent, double data, Resultado resultado) {
-		return balance(insert(node, parent, data, resultado));
+    node = inserts(node, parent, (double) data, resultado); // chama o método interno
+    return balance(node);
 	}
 
-	protected Node insert(Node node, Node parent, int data, Resultado resultado) {
+	public void printInOrder(Node node) {
+        if (node == null) return;
+        printInOrder(node.getLeft());
+        System.out.println("Similaridade: " + node.getData());
+        for (Resultado r : node.getResultados()) {
+            System.out.println("  " + r);
+        }
+        printInOrder(node.getRight());
+    }
+
+	protected Node inserts(Node node, Node parent, double data, Resultado resultado) {
 		if (node == null) {
-			return new Node(data, parent, resultado);
+			Node novo = new Node(data, parent, resultado);
+			novo.getResultados().add(resultado);
+			return novo;
 		}
 
 		double diff = data - node.getData();
-		
+
 		if (diff < 0) {
 			node.setLeft(insert(node.getLeft(), node, data, resultado));
 		} else if (diff > 0) {
@@ -30,8 +43,8 @@ public class AVL {
 			node.getResultados().add(resultado);
 			return node;
 		}
-		
-		return node;
+
+    	return balance(node);
 	}
 	
 	
@@ -122,6 +135,40 @@ public class AVL {
 		return rotateLeft(node);
 	}
 	
+	public int getDegree() {
+		return getDegree(root);
+	}
+
+	private int getDegree(Node node) {
+		if (node == null || node.isLeaf()) {
+			return 0;
+		}
+
+		int degree = node.getDegree();
+		
+		if (node.hasLeftChild()) {
+			degree = Math.max(degree, getDegree(node.getLeft()));
+		}
+		
+		if (node.hasRightChild()) {
+			degree = Math.max(degree, getDegree(node.getRight()));
+		}
+		
+		return degree;
+	}
+
+	public int getHeight() {
+		if (isEmpty()) {
+			return -1;
+		}
+
+		return root.getHeight();
+	}
+
+	public boolean isEmpty() {
+		return root == null;
+	}
+
 	@Override
 	public String toString() {
 		return "AVL - isEmpty(): " + isEmpty()

@@ -11,17 +11,6 @@ public class Node {
 	protected Node left;
 	protected Node right;
 
-	public Node() {
-		this(0, null);
-	}
-
-	public Node(double data) {
-		this(data, null);
-	}
-	public List<Resultado> getResultados(){
-		return this.resultados;
-	}
-
 	public Node(double data, Node parent, Resultado resultados) {
 		this.data = data;
 		this.resultados = new ArrayList<>();
@@ -29,6 +18,10 @@ public class Node {
 		this.parent = parent;
 		this.left = null;
 		this.right = null;
+	}
+
+	public List<Resultado> getResultados(){
+		return this.resultados;
 	}
 
 	public double getData() {

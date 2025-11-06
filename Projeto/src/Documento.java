@@ -131,7 +131,7 @@ public class Documento {
     
 
     public String[] getWords() { 
-        return tabelaHash.getDistribuicao(); //retorna todas as chaves armazenadas 
+        return tabelaHash.getKeys(); //retorna todas as chaves armazenadas 
     }
 
     public boolean isEmpty() { 

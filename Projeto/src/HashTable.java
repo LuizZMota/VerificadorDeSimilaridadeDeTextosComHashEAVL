@@ -139,6 +139,20 @@ public class HashTable {
     }
 
 
+    public String[] getKeys(){
+        String[] keys = new String[size];
+        int index = 0;
+
+        for (int i =0;i<capacity;i++){
+            NodeHash current = buckets[i];
+            while(current != null){
+                keys[index++] = current.key;
+                current = current.next;
+            }
+        }
+
+        return keys;
+    }
     public String getHashFunctionName() {
         return hashFunction == HASH_MULTIPLICACAO ? "hashMultiplicativo" : "hashModulo";
     }

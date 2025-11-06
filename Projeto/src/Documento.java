@@ -130,6 +130,19 @@ public class Documento {
     }
     
 
+    public String[] getWords() { 
+        return tabelaHash.getDistribuicao(); //retorna todas as chaves armazenadas 
+    }
+
+    public boolean isEmpty() { 
+        return tabelaHash.size() == 0; 
+    }
+
+    public int getFrequencia(String key) { 
+        int freq = (int) tabelaHash.get(key); 
+        return (freq == 0) ? 0 : freq; 
+    }
+
     public String getNomeArquivo() {
         return nomeArquivo;
     }

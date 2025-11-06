@@ -4,5 +4,15 @@ que recebem dois objetos Documento como entrada e retornam um double representan
 Jaccard, etc.) ser´a implementada. Separar essa l´ogica facilita testes e futuras
 extens˜oes (ex: adicionar novas m´etricas).*/
 public class ComparadorDeDocumentos {
-    
+    public Documento doc1;
+    public Documento doc2;
+
+    public ComparadorDeDocumentos(){
+    }
+
+    public double calcularSimilaridade(Documento doc1, Documento doc2){
+        if (doc1 == null || doc2 == null ) { return 0.0; }
+        
+        return 0.0;
+    }
 }

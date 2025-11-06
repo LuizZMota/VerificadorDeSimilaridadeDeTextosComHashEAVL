@@ -9,8 +9,31 @@ public class ComparadorDeDocumentos {
 
     public double calcularSimilaridade(Documento doc1, Documento doc2){
         if (doc1 == null || doc2 == null ) { return 0.0; }
+        palavras1 = doc1.getWords();
+        palavras2 = doc2.getWords();
+        String[] todas = unirSemDuplicar(palavras1, palavras2);
 
-        return 0.0;
+        double produtoEscalar = 0.0;
+        double somaQuadrado = 0.0;
+        double somaQuadrado2 = 0.0;
+
+        for(String palavra : todas){
+            int f1 = doc1.getFrequencia(palavra);
+            int f2 = doc2.getFrequencia(palavra);
+
+            produtoEscalar += (f1 * f2);
+            somaQuadrado += (f1 * f1);
+            somaQuadrado2 += (f2 * f2);
+        }
+        
+        double magnitude1 = Math.sqrt(somaQuadrado);
+        double magnitude2 = Math.sqrt(somaQuadrado2);
+
+        if (magnitude1 == 0 || magnitude2 == 0){
+            return 0.0;
+        }
+
+        return produtoEscalar / (magnitude1 * magnitude2);
     }
 
     private String[] unificarPalavras(String[] a, String[] b){

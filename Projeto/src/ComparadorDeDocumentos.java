@@ -9,9 +9,9 @@ public class ComparadorDeDocumentos {
 
     public double calcularSimilaridade(Documento doc1, Documento doc2){
         if (doc1 == null || doc2 == null ) { return 0.0; }
-        palavras1 = doc1.getWords();
-        palavras2 = doc2.getWords();
-        String[] todas = unirSemDuplicar(palavras1, palavras2);
+        String[] palavras1 = doc1.getWords();
+        String[] palavras2 = doc2.getWords();
+        String[] todas = unificarPalavras(palavras1, palavras2);
 
         double produtoEscalar = 0.0;
         double somaQuadrado = 0.0;

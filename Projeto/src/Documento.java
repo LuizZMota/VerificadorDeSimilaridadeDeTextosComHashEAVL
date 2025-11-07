@@ -8,7 +8,13 @@ popular a tabela hash.*/
 
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 public class Documento {
     
@@ -73,14 +79,17 @@ public class Documento {
     //  * 3. Popula a tabela hash com o vocabulário e frequências
 
     private void processarDocumento() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))) {
+    // 1. Converte o nomeArquivo (que é o caminho completo) para um objeto Path
+    Path path = Paths.get(nomeArquivo);
+
+        // 2. Usa Files.newBufferedReader para abrir o arquivo
+        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             String linha;
-            
-            // Lê o arquivo linha por linha
             while ((linha = reader.readLine()) != null) {
-                // Aplica a normalização e processa cada linha
                 processarLinha(linha);
             }
+        } catch (Exception e) {
+            System.out.println("Erro ao processar o arquivo " + nomeArquivo + " (Caminho: " + path.toAbsolutePath() + "): " + e.getMessage());
         }
     }
     
@@ -112,7 +121,7 @@ public class Documento {
             }
             
             // Etapa 4: Verifica se não é uma stop word
-            if (STOP_WORDS.contains(palavra)) {
+            if (isStopWord(palavra)) {
                 continue;
             }
             
@@ -138,9 +147,12 @@ public class Documento {
         return tabelaHash.size() == 0; 
     }
 
+    public int getTamanhoVocabulario() {
+        return tabelaHash.size();
+    }
     public int getFrequencia(String key) { 
-        int freq = (int) tabelaHash.get(key); 
-        return (freq == 0) ? 0 : freq; 
+        int freq = tabelaHash.get(key);
+        return Math.max(freq, 0); 
     }
 
     public String getNomeArquivo() {

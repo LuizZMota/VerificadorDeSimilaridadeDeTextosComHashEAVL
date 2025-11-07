@@ -12,8 +12,8 @@ public class AVL {
 	}
 
 	public Node insert(Node node, Node parent, double data, Resultado resultado) {
-    node = inserts(node, parent, (double) data, resultado); // chama o método interno
-    return balance(node);
+		node = inserts(node, parent, (double) data, resultado); // chama o método interno
+		return balance(node);
 	}
 
 	public void printInOrder(Node node) {
@@ -47,7 +47,27 @@ public class AVL {
     	return balance(node);
 	}
 	
-	
+	public Node buscar(double data) {
+		return buscarRecursivo(this.root, data);
+	}
+
+	private Node buscarRecursivo(Node node, double data) {
+		if (node == null) {
+			return null; 
+		}
+
+		final double EPSILON = 0.0000001; 
+		double diff = data - node.getData();
+		
+		if (diff < -EPSILON) {
+			return buscarRecursivo(node.getLeft(), data);
+		} else if (diff > EPSILON) {
+			return buscarRecursivo(node.getRight(), data);
+		} else {
+			return node;
+		}
+	}
+
 	private Node balance(Node node) {
 		if (node == null)
 			return null;
@@ -175,6 +195,14 @@ public class AVL {
 				+ ", getDegree(): " + getDegree()
 				+ ", getHeight(): " + getHeight()
 				+ ", root => { " + root + " }";				
+	}
+
+	public Node getRoot() {
+		return root;
+	}
+
+	public void setRoot(Node root) {
+		this.root = root;
 	}
 
 }

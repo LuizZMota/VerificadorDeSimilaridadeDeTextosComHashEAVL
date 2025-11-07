@@ -4,10 +4,16 @@ que recebem dois objetos Documento como entrada e retornam um double representan
 Jaccard, etc.) ser´a implementada. Separar essa l´ogica facilita testes e futuras
 extens˜oes (ex: adicionar novas m´etricas).*/
 public class ComparadorDeDocumentos {
+    String metrica;
+    public ComparadorDeDocumentos(String metrica){
+        this.metrica = metrica;
+    }
     
-    public ComparadorDeDocumentos(){}
+    public String getMetrica() {
+            return metrica;
+    }
 
-    public double calcularSimilaridade(Documento doc1, Documento doc2){
+    public double calcularCosseno(Documento doc1, Documento doc2){
         if (doc1 == null || doc2 == null ) { return 0.0; }
         String[] palavras1 = doc1.getWords();
         String[] palavras2 = doc2.getWords();
@@ -66,4 +72,7 @@ public class ComparadorDeDocumentos {
         }
         return false;
     }
+
+
+    
 }

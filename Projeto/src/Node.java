@@ -11,7 +11,7 @@ public class Node {
 	protected Node left;
 	protected Node right;
 
-	public Node(double data, Node parent, Resultado resultados) {
+	public Node(double data, Node parent) {
 		this.data = data;
 		this.resultados = new ArrayList<>();
 		this.balanceFactor = 0;

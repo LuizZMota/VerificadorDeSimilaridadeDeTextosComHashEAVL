@@ -5,8 +5,6 @@ import java.util.List;
 
 
 public class Main {
-
-
     public static void main(String[] args) {
         
         if (args.length < 3) {
@@ -61,7 +59,9 @@ public class Main {
             }
         }
 
-        System.out.println("Total de documentos processados: " + documentosLidos.size());
+        System.out.println("=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===");
+        System.out.println("Total de documentos comparados: " + documentosLidos.size());
+
 
         if (modo.equalsIgnoreCase("lista")) {
           
@@ -81,6 +81,7 @@ public class Main {
             String arquivo1 = args[3];
             String arquivo2 = args[4];
 
+            
             
             
         }

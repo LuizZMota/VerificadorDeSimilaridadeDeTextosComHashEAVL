@@ -16,6 +16,16 @@ public class AVL {
 		return balance(node);
 	}
 
+	public void BuscarposOrderRec(Node atual, String doc1, String doc2){
+        if(atual != null){
+            BuscarposOrderRec(atual.getLeft(), doc1, doc2);
+			
+            BuscarposOrderRec(atual.getRight(), doc1, doc2);
+            System.out.print(atual.getData() + " ");
+		}
+
+	}
+
 	public void printInOrder(Node node) {
         if (node == null) return;
         printInOrder(node.getLeft());
@@ -28,7 +38,7 @@ public class AVL {
 
 	protected Node inserts(Node node, Node parent, double data, Resultado resultado) {
 		if (node == null) {
-			Node novo = new Node(data, parent, resultado);
+			Node novo = new Node(data, parent);
 			novo.getResultados().add(resultado);
 			return novo;
 		}

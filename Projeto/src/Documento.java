@@ -9,6 +9,8 @@ popular a tabela hash.*/
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -79,17 +81,13 @@ public class Documento {
     //  * 3. Popula a tabela hash com o vocabulário e frequências
 
     private void processarDocumento() {
-    // 1. Converte o nomeArquivo (que é o caminho completo) para um objeto Path
-    Path path = Paths.get(nomeArquivo);
-
-        // 2. Usa Files.newBufferedReader para abrir o arquivo
-        try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))) {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 processarLinha(linha);
             }
-        } catch (Exception e) {
-            System.out.println("Erro ao processar o arquivo " + nomeArquivo + " (Caminho: " + path.toAbsolutePath() + "): " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo: " + nomeArquivo + " -> " + e.getMessage());
         }
     }
     

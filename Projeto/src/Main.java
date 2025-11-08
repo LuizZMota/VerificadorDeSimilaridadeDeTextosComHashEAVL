@@ -37,19 +37,14 @@ public class Main {
         }
 
         for (File arquivo : arquivos) {
-            String caminhoCompleto = arquivo.getAbsolutePath(); 
-            
-            String nomeDoArquivo = arquivo.getName();
-
-            Documento novoDocumento = new Documento(caminhoCompleto);
-            
-            documentosLidos.add(novoDocumento);
-            System.out.println("Processando: " + nomeDoArquivo);
+            Documento doc = new Documento(arquivo.getPath());
+            documentosLidos.add(doc);
+            System.out.println("Processando: " + arquivo.getName());
         }
 
         ComparadorDeDocumentos comparador = new ComparadorDeDocumentos("Cosseno");
         for (int i=0;i<documentosLidos.size();i++){
-            for (int j = 0; j<documentosLidos.size();j++){
+            for (int j = i+1; j<documentosLidos.size();j++){
                 Documento d1 = documentosLidos.get(i);
                 Documento d2 = documentosLidos.get(j);
 
@@ -66,8 +61,10 @@ public class Main {
         System.out.println("Métrica de similaridade: " + comparador.getMetrica() + "\n");
         System.out.println("Pares com similaridade >= 0.75:");
         System.out.println("-------------------------------------------------");
-        
-
+        avlTree.posOrderRec(avlTree.getRoot(), 0.75);
+        System.out.println("\nPares com menor similaridade: ");
+        System.out.println("-------------------------------------------------");
+        avlTree.search2(avlTree.getRoot());
 
         if (modo.equalsIgnoreCase("lista")) {
           
@@ -88,7 +85,7 @@ public class Main {
             String arquivo2 = args[4];
 
             double resp = avlTree.BuscarposOrderRec(avlTree.getRoot(), arquivo1, arquivo2);
-            System.out.println("Similaridade: " + resp);
+            //System.out.println("Similaridade: " + resp);
             
             
             

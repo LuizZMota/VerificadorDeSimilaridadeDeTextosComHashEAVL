@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class AVL {
@@ -13,18 +12,76 @@ public class AVL {
 		this.root = root;
 	}
 
-	public Node insert(Node node, Node parent, double data, Resultado resultado) {
-		node = inserts(node, parent, (double) data, resultado); // chama o método interno
-		return balance(node);
-	}
+	
 
-	public double BuscarposOrderRecItem(Node atual, double data){
-		if(atual!=null){
-			BuscarposOrderRecItem(atual.getLeft(), data);
-			BuscarposOrderRecItem(atual.getRight(), data);
-			
+	public void posOrderRec(Node atual, double limiar){
+		if(atual != null){
+			posOrderRec(atual.getLeft(), limiar);
+			posOrderRec(atual.getRight(), limiar);
+			if(atual.getData() >= limiar){
+				List<Resultado> res = atual.getResultados();
+				for (Resultado r : res) {
+					System.out.println(r.toString());
+				}
+			}
 		}
 	}
+
+	public void search2(Node atual){
+		double menor = posOrderRecs(atual);
+		search3(atual, menor);
+	}
+
+	private void search3(Node node, double data) {
+		if (node == null) {
+			return;
+		}
+		
+		double diff = data - node.getData();
+
+		if (diff < 0) {
+			 search3(node.getLeft(), data);
+		} else if (diff > 0) {
+			search3(node.getRight(), data);
+		} else {
+			List<Resultado> res = node.getResultados();
+			for (Resultado r : res) {
+				System.out.println(r.toString());
+			}
+		}	
+	}
+
+	public double posOrderRecs(Node atual){
+		if (atual == null) return Double.MAX_VALUE;
+
+		double menorEsq = posOrderRecs(atual.getLeft());
+		double menorDir = posOrderRecs(atual.getRight());
+
+		double menorSub = Math.min(menorEsq, menorDir);
+		return Math.min(menorSub, atual.getData());
+	}
+
+	public void search(Node node, int data, double limiar) {
+		if (node == null) {
+			return;
+		}
+		
+		double diff = data - node.getData();
+
+		if (diff < 0) {
+			search(node.getLeft(), data, limiar);
+		} else if (diff > 0) {
+			search(node.getRight(), data, limiar);
+		} else {
+			if(node.getData() >= limiar){
+				List<Resultado> res = node.getResultados();
+				for (Resultado r : res) {
+					System.out.println(r.toString());
+				}
+			}
+		}
+	}
+
 	public double BuscarposOrderRec(Node atual, String doc1, String doc2) {
 		if (atual != null) {
 			double resultadoEsquerda = BuscarposOrderRec(atual.getLeft(), doc1, doc2);
@@ -36,11 +93,10 @@ public class AVL {
 			List<Resultado> res = atual.getResultados();
 
 			for (Resultado r : res) {
-				// Normaliza para comparar apenas o nome do arquivo
-				String r1 = java.nio.file.Paths.get(r.getDoc1()).getFileName().toString();
-				String r2 = java.nio.file.Paths.get(r.getDoc2()).getFileName().toString();
-				String n1 = java.nio.file.Paths.get(doc1).getFileName().toString();
-				String n2 = java.nio.file.Paths.get(doc2).getFileName().toString();
+				String r1 = new java.io.File(r.getDoc1()).getName();
+				String r2 = new java.io.File(r.getDoc2()).getName();
+				String n1 = new java.io.File(doc1).getName();
+				String n2 = new java.io.File(doc2).getName();
 
 				boolean ordemAB = r1.equals(n1) && r2.equals(n2);
 				boolean ordemBA = r1.equals(n2) && r2.equals(n1);
@@ -64,6 +120,11 @@ public class AVL {
         }
         printInOrder(node.getRight());
     }
+
+	public Node insert(Node node, Node parent, double data, Resultado resultado) {
+		node = inserts(node, parent, (double) data, resultado); // chama o método interno
+		return balance(node);
+	}
 
 	protected Node inserts(Node node, Node parent, double data, Resultado resultado) {
 		if (node == null) {

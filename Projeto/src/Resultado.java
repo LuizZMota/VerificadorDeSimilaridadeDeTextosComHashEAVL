@@ -48,6 +48,6 @@ public class Resultado {
 
     @Override
     public String toString() {
-        return doc1 + " <-> " + doc2 + " = " + String.format("%.3f", similaridade);
+        return getDoc1() + " <-> " + getDoc2() + " = " + String.format("%.3f", similaridade);
     }   
 }

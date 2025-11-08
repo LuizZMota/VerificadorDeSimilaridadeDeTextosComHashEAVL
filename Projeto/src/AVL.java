@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class AVL {
 
@@ -16,15 +18,42 @@ public class AVL {
 		return balance(node);
 	}
 
-	public void BuscarposOrderRec(Node atual, String doc1, String doc2){
-        if(atual != null){
-            BuscarposOrderRec(atual.getLeft(), doc1, doc2);
+	public double BuscarposOrderRecItem(Node atual, double data){
+		if(atual!=null){
+			BuscarposOrderRecItem(atual.getLeft(), data);
+			BuscarposOrderRecItem(atual.getRight(), data);
 			
-            BuscarposOrderRec(atual.getRight(), doc1, doc2);
-            System.out.print(atual.getData() + " ");
 		}
-
 	}
+	public double BuscarposOrderRec(Node atual, String doc1, String doc2) {
+		if (atual != null) {
+			double resultadoEsquerda = BuscarposOrderRec(atual.getLeft(), doc1, doc2);
+			if (resultadoEsquerda != 0.0) return resultadoEsquerda;
+
+			double resultadoDireita = BuscarposOrderRec(atual.getRight(), doc1, doc2);
+			if (resultadoDireita != 0.0) return resultadoDireita;
+
+			List<Resultado> res = atual.getResultados();
+
+			for (Resultado r : res) {
+				// Normaliza para comparar apenas o nome do arquivo
+				String r1 = java.nio.file.Paths.get(r.getDoc1()).getFileName().toString();
+				String r2 = java.nio.file.Paths.get(r.getDoc2()).getFileName().toString();
+				String n1 = java.nio.file.Paths.get(doc1).getFileName().toString();
+				String n2 = java.nio.file.Paths.get(doc2).getFileName().toString();
+
+				boolean ordemAB = r1.equals(n1) && r2.equals(n2);
+				boolean ordemBA = r1.equals(n2) && r2.equals(n1);
+
+				if (ordemAB || ordemBA) {
+					return atual.getData();
+				}
+			}
+		}
+		return 0.0;
+	}
+
+	
 
 	public void printInOrder(Node node) {
         if (node == null) return;

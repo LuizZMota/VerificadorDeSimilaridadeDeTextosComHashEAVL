@@ -58,9 +58,15 @@ public class Main {
                 avlTree.setRoot(avlTree.insert(avlTree.getRoot(), null, similaridade, res));
             }
         }
-
+        
         System.out.println("=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===");
-        System.out.println("Total de documentos comparados: " + documentosLidos.size());
+        System.out.println("Total de documentos processados: " + documentosLidos.size());
+        System.out.println("Total de pares comparados: " + (documentosLidos.size()/2));
+        System.out.println("Função hash utilizada: " + documentosLidos.get(0).getTabelaHash().getHashFunctionName());
+        System.out.println("Métrica de similaridade: " + comparador.getMetrica() + "\n");
+        System.out.println("Pares com similaridade >= 0.75:");
+        System.out.println("-------------------------------------------------");
+        
 
 
         if (modo.equalsIgnoreCase("lista")) {
@@ -81,6 +87,8 @@ public class Main {
             String arquivo1 = args[3];
             String arquivo2 = args[4];
 
+            double resp = avlTree.BuscarposOrderRec(avlTree.getRoot(), arquivo1, arquivo2);
+            System.out.println("Similaridade: " + resp);
             
             
             

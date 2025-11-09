@@ -61,18 +61,6 @@ public class Main {
             }
         }
         
-        // Logger.log("=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===");
-        // Logger.log("Total de documentos processados: " + documentosLidos.size());
-        // Logger.log("Total de pares comparados: " + (count));
-        // Logger.log("Função hash utilizada: " + documentosLidos.get(0).getTabelaHash().getHashFunctionName());
-        // Logger.log("Métrica de similaridade: " + comparador.getMetrica() + "\n");
-        // Logger.log("Pares com similaridade >= 0.75:");
-        // Logger.log("-------------------------------------------------");
-        // avlTree.maiorSimilaridade(avlTree.getRoot(), 0.75);
-        // Logger.log("\nPares com menor similaridade: ");
-        // Logger.log("-------------------------------------------------");
-        // avlTree.menorSimilaridade(avlTree.getRoot());
-
         if (modo.equalsIgnoreCase("lista")) {
             Logger.log("=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===");
             Logger.log("\nTotal de documentos processados: " + documentosLidos.size());
@@ -102,7 +90,7 @@ public class Main {
             resultadosOrdenados.sort((a, b) -> Double.compare(b.getSimilaridade(), a.getSimilaridade()));
 
             Logger.log("=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===");
-            Logger.log("Top " + K + " pares mais semelhantes:");
+            Logger.log("\nTop " + K + " pares mais semelhantes:");
             Logger.log("---------------------------------");
 
             for (int i = 0; i < Math.min(K, resultadosOrdenados.size()); i++) {
@@ -124,11 +112,10 @@ public class Main {
 
             
             Logger.log("=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===");
-            Logger.log("Comparando: " + arquivo1 + " <-> " + arquivo2);            
+            Logger.log("\nComparando: " + arquivo1 + " <-> " + arquivo2);            
             Logger.log(String.format("Similaridade calculada: %.2f", resp));
             Logger.log("Métrica utilizada: " + comparador.getMetrica() + "\n");
         }
-
         Logger.close();
     }
 }

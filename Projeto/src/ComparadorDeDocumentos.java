@@ -47,13 +47,13 @@ public class ComparadorDeDocumentos {
         int count = 0;
 
         for(String s : a){
-            if(!containsInTemp(temp, count, s)){
+            if(!contain(a, count, s)){
                 temp[count++] = s;
             }
         }
 
         for(String s : b){
-            if(!containsInTemp(temp, count, s)){
+            if(!contain(b, count, s)){
                 temp[count++] = s;
             }
         }
@@ -66,13 +66,13 @@ public class ComparadorDeDocumentos {
         return resultado;
     }
 
-    private boolean containsInTemp(String[] temp, int limite, String valor) {
-        for (int i = 0; i < limite; i++) {
-            if (temp[i] != null && temp[i].equals(valor)) {
-                return true;
-            }
+    private boolean contain(String[] array, int limite, String valor){
+        for (int i = 0; i<limite; i++){
+            if(array[i].equals(valor)) return true;
         }
         return false;
     }
 
+
+    
 }

@@ -106,13 +106,7 @@ public class AVL {
 			for (Resultado r : res) {
 				String r1 = new java.io.File(r.getDoc1()).getName();
 				String r2 = new java.io.File(r.getDoc2()).getName();
-				String n1 = new java.io.File(doc1).getName();
-				String n2 = new java.io.File(doc2).getName();
-
-				boolean ordemAB = r1.equals(n1) && r2.equals(n2);
-				boolean ordemBA = r1.equals(n2) && r2.equals(n1);
-
-				if (ordemAB || ordemBA) {
+				if(r1.equals(doc1) && r2.equals(doc2)){
 					return atual.getData();
 				}
 			}

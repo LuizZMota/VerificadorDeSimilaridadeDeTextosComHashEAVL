@@ -48,6 +48,8 @@ public class Resultado {
 
     @Override
     public String toString() {
-        return getDoc1() + " <-> " + getDoc2() + " = " + String.format("%.2f", similaridade);
+        String nome1 = new java.io.File(doc1).getName();
+        String nome2 = new java.io.File(doc2).getName();
+        return nome1 + " <-> " + nome2 + " = " + String.format("%.2f", similaridade);
     }   
 }

@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +24,7 @@ public class Main {
 
         File pastaDocumentos = new File(diretorio);
 
-        FilenameFilter filtroTxt = new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-               return name.toLowerCase().endsWith(".txt");
-            }
-        };
-
-        File[] arquivos = pastaDocumentos.listFiles(filtroTxt);
+        File[] arquivos = pastaDocumentos.listFiles();
 
         if (arquivos == null || arquivos.length == 0) {
             Logger.log("Erro: Não foram encontrados arquivos .txt no diretório: " + diretorio);
@@ -42,9 +34,7 @@ public class Main {
 
         for (File arquivo : arquivos) {
             Documento doc = new Documento(arquivo.getPath());
-            documentosLidos.add(doc);
-            
-            
+            documentosLidos.add(doc);         
         }
 
         ComparadorDeDocumentos comparador = new ComparadorDeDocumentos("Cosseno");

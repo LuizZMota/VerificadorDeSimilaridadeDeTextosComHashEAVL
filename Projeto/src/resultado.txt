@@ -1,0 +1,33 @@
+=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===
+
+Total de documentos processados: 8
+Total de pares comparados: 28
+Função hash utilizada: hashModulo
+Métrica de similaridade: Cosseno
+
+Pares com similaridade >= 0.5
+-------------------------------------------------
+
+Pares com menor similaridade: 
+-------------------------------------------------
+.\Documentos\doc1.txt <-> .\Documentos\doc3.txt = 0,00
+.\Documentos\doc1.txt <-> .\Documentos\doc4.txt = 0,00
+.\Documentos\doc1.txt <-> .\Documentos\doc5.txt = 0,00
+.\Documentos\doc1.txt <-> .\Documentos\doc6.txt = 0,00
+.\Documentos\doc2.txt <-> .\Documentos\doc3.txt = 0,00
+.\Documentos\doc2.txt <-> .\Documentos\doc4.txt = 0,00
+.\Documentos\doc2.txt <-> .\Documentos\doc6.txt = 0,00
+.\Documentos\doc2.txt <-> .\Documentos\doc7.txt = 0,00
+.\Documentos\doc2.txt <-> .\Documentos\doc8.txt = 0,00
+.\Documentos\doc3.txt <-> .\Documentos\doc5.txt = 0,00
+.\Documentos\doc3.txt <-> .\Documentos\doc6.txt = 0,00
+.\Documentos\doc3.txt <-> .\Documentos\doc7.txt = 0,00
+.\Documentos\doc3.txt <-> .\Documentos\doc8.txt = 0,00
+.\Documentos\doc4.txt <-> .\Documentos\doc5.txt = 0,00
+.\Documentos\doc4.txt <-> .\Documentos\doc6.txt = 0,00
+.\Documentos\doc4.txt <-> .\Documentos\doc7.txt = 0,00
+.\Documentos\doc4.txt <-> .\Documentos\doc8.txt = 0,00
+.\Documentos\doc5.txt <-> .\Documentos\doc7.txt = 0,00
+.\Documentos\doc5.txt <-> .\Documentos\doc8.txt = 0,00
+.\Documentos\doc6.txt <-> .\Documentos\doc7.txt = 0,00
+.\Documentos\doc6.txt <-> .\Documentos\doc8.txt = 0,00

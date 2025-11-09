@@ -14,25 +14,36 @@ public class AVL {
 
 	
 
-	public void posOrderRec(Node atual, double limiar){
+	public void maiorSimilaridade(Node atual, double limiar){
 		if(atual != null){
-			posOrderRec(atual.getLeft(), limiar);
-			posOrderRec(atual.getRight(), limiar);
+			maiorSimilaridade(atual.getLeft(), limiar);
+			maiorSimilaridade(atual.getRight(), limiar);
 			if(atual.getData() >= limiar){
 				List<Resultado> res = atual.getResultados();
 				for (Resultado r : res) {
-					System.out.println(r.toString());
+					Logger.log(r.toString());
 				}
 			}
 		}
 	}
 
-	public void search2(Node atual){
-		double menor = posOrderRecs(atual);
-		search3(atual, menor);
+	public void topSimilaridades(Node atual, List<Resultado> lista, double limiar){
+		if (atual == null) return;
+
+		topSimilaridades(atual.getLeft(), lista, limiar);
+		topSimilaridades(atual.getRight(), lista, limiar);
+
+		if (atual.getData() >= limiar) {
+			lista.addAll(atual.getResultados());
+		}
 	}
 
-	private void search3(Node node, double data) {
+	public void menorSimilaridade(Node atual){
+		double menor = buscarMenor(atual);
+		search(atual, menor);
+	}
+
+	private void search(Node node, double data) {
 		if (node == null) {
 			return;
 		}
@@ -40,28 +51,28 @@ public class AVL {
 		double diff = data - node.getData();
 
 		if (diff < 0) {
-			 search3(node.getLeft(), data);
+			 search(node.getLeft(), data);
 		} else if (diff > 0) {
-			search3(node.getRight(), data);
+			search(node.getRight(), data);
 		} else {
 			List<Resultado> res = node.getResultados();
 			for (Resultado r : res) {
-				System.out.println(r.toString());
+				Logger.log(r.toString());
 			}
 		}	
 	}
 
-	public double posOrderRecs(Node atual){
+	private double buscarMenor(Node atual){
 		if (atual == null) return Double.MAX_VALUE;
 
-		double menorEsq = posOrderRecs(atual.getLeft());
-		double menorDir = posOrderRecs(atual.getRight());
+		double menorEsq = buscarMenor(atual.getLeft());
+		double menorDir = buscarMenor(atual.getRight());
 
 		double menorSub = Math.min(menorEsq, menorDir);
 		return Math.min(menorSub, atual.getData());
 	}
 
-	public void search(Node node, int data, double limiar) {
+	/*public void search(Node node, int data, double limiar) {
 		if (node == null) {
 			return;
 		}
@@ -76,11 +87,11 @@ public class AVL {
 			if(node.getData() >= limiar){
 				List<Resultado> res = node.getResultados();
 				for (Resultado r : res) {
-					System.out.println(r.toString());
+					Logger.log(r.toString());
 				}
 			}
 		}
-	}
+	}*/
 
 	public double BuscarposOrderRec(Node atual, String doc1, String doc2) {
 		if (atual != null) {
@@ -114,9 +125,9 @@ public class AVL {
 	public void printInOrder(Node node) {
         if (node == null) return;
         printInOrder(node.getLeft());
-        System.out.println("Similaridade: " + node.getData());
+        Logger.log("Similaridade: " + node.getData());
         for (Resultado r : node.getResultados()) {
-            System.out.println("  " + r);
+            Logger.log("  " + r);
         }
         printInOrder(node.getRight());
     }

@@ -98,7 +98,7 @@ public class Documento {
         
         // Etapa 2: Remover pontuação e caracteres não-alfanuméricos
         // Mantém apenas letras, números e espaços
-        linha = linha.replaceAll("[^a-záàâãéèêíïóôõöúçñ0-9\\s]", " ");
+        linha = linha.replaceAll("[^\\p{L}\\p{Nd}\\s]", " ");
         
         // Etapa 3:separar o texto em palavras
         String[] palavras = linha.split("\\s+");

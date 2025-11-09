@@ -93,12 +93,12 @@ public class AVL {
 		}
 	}*/
 
-	public double BuscarposOrderRec(Node atual, String doc1, String doc2) {
+	public double buscarDocs(Node atual, String doc1, String doc2) {
 		if (atual != null) {
-			double resultadoEsquerda = BuscarposOrderRec(atual.getLeft(), doc1, doc2);
+			double resultadoEsquerda = buscarDocs(atual.getLeft(), doc1, doc2);
 			if (resultadoEsquerda != 0.0) return resultadoEsquerda;
 
-			double resultadoDireita = BuscarposOrderRec(atual.getRight(), doc1, doc2);
+			double resultadoDireita = buscarDocs(atual.getRight(), doc1, doc2);
 			if (resultadoDireita != 0.0) return resultadoDireita;
 
 			List<Resultado> res = atual.getResultados();
@@ -120,17 +120,6 @@ public class AVL {
 		return 0.0;
 	}
 
-	
-
-	public void printInOrder(Node node) {
-        if (node == null) return;
-        printInOrder(node.getLeft());
-        Logger.log("Similaridade: " + node.getData());
-        for (Resultado r : node.getResultados()) {
-            Logger.log("  " + r);
-        }
-        printInOrder(node.getRight());
-    }
 
 	public Node insert(Node node, Node parent, double data, Resultado resultado) {
 		node = inserts(node, parent, (double) data, resultado); // chama o método interno
@@ -156,27 +145,6 @@ public class AVL {
 		}
 
     	return balance(node);
-	}
-	
-	public Node buscar(double data) {
-		return buscarRecursivo(this.root, data);
-	}
-
-	private Node buscarRecursivo(Node node, double data) {
-		if (node == null) {
-			return null; 
-		}
-
-		final double EPSILON = 0.0000001; 
-		double diff = data - node.getData();
-		
-		if (diff < -EPSILON) {
-			return buscarRecursivo(node.getLeft(), data);
-		} else if (diff > EPSILON) {
-			return buscarRecursivo(node.getRight(), data);
-		} else {
-			return node;
-		}
 	}
 
 	private Node balance(Node node) {

@@ -108,7 +108,7 @@ public class Main {
             String arquivo1 = args[3];
             String arquivo2 = args[4];
 
-            double resp = avlTree.BuscarposOrderRec(avlTree.getRoot(), arquivo1, arquivo2);
+            double resp = avlTree.buscarDocs(avlTree.getRoot(), arquivo1, arquivo2);
 
             
             Logger.log("=== VERIFICADOR DE SIMILARIDADE DE TEXTOS ===");

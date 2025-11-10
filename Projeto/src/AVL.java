@@ -4,6 +4,10 @@ public class AVL {
 
 	protected Node root;
 
+	private int rotacoesEsquerda = 0;
+	private int rotacoesDireita = 0;
+	private int rotacoesDuplas = 0;
+
 	public AVL() {
 		this(null);
 	}
@@ -193,7 +197,7 @@ public class AVL {
 		node.setRight(left);
 
 		newRoot.setLeft(node);
-		
+		rotacoesEsquerda++;
 		return newRoot;
 	}
 	
@@ -214,17 +218,20 @@ public class AVL {
 		node.setLeft(right);
 		
 		newRoot.setRight(node);
+		rotacoesDireita++;
 		
 		return newRoot;
 	}
 	
 	private Node rotateLeftRight(Node node) {
 		node.setLeft(rotateLeft(node.getLeft()));
+		rotacoesDuplas++;
 		return rotateRight(node);
 	}
 	
 	private Node rotateRightLeft(Node node) {
 		node.setRight(rotateRight(node.getRight()));
+		rotacoesDuplas++;
 		return rotateLeft(node);
 	}
 	
@@ -262,6 +269,12 @@ public class AVL {
 		return root == null;
 	}
 
+	public String exibirContadoresRotacao() {
+		return "Rotações: [Esquerda: " + rotacoesEsquerda +
+			   ", Direita: " + rotacoesDireita +
+			   ", Duplas: " + rotacoesDuplas + "]";
+	}
+	
 	@Override
 	public String toString() {
 		return "AVL - isEmpty(): " + isEmpty()

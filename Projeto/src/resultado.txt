@@ -1,5 +1,6 @@
 === VERIFICADOR DE SIMILARIDADE DE TEXTOS ===
 
-Top 3 pares mais semelhantes:
----------------------------------
-doc1.txt <-> doc2.txt = 0,40
+Comparando: doc1.txt <-> doc2.txt
+Similaridade calculada: 0.40
+Métrica utilizada: Cosseno
+

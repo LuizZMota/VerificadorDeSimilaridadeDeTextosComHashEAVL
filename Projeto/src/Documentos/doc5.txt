@@ -1,0 +1,1 @@
+O pré-processamento de texto envolve a normalização para minúsculas e a remoção de stop words comuns. A tokenização separa as palavras e as transforma em vetores de frequência. A similaridade de cosseno mede o ângulo entre estes vetores, determinando o grau de similaridade sem ser afetada pelo comprimento dos textos, o que é um ponto forte da métrica.

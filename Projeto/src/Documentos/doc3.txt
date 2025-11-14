@@ -1,0 +1,1 @@
+As árvores AVL garantem que a altura da estrutura de dados permaneça logarítmica, assegurando a eficiência O(log N) nas operações de busca e inserção. A manutenção do balanceamento exige rotações, sejam elas simples ou duplas. As tabelas hash, por sua vez, oferecem O(1) amortizado para acesso, sendo essenciais para a representação vetorial de documentos no modelo VSM.

@@ -106,6 +106,86 @@ public class Main {
             Logger.log(String.format("Similaridade calculada: %.2f", resp));
             Logger.log("Métrica utilizada: " + comparador.getMetrica() + "\n");
         }
+
+        gerarAnaliseComparativa(diretorio);
         Logger.close();
+    }
+
+    private static void gerarAnaliseComparativa(String diretorio) {
+        Logger.log("Processando documentos com AMBAS as funções hash para comparação...\n");
+        
+        File pastaDocumentos = new File(diretorio);
+        File[] arquivos = pastaDocumentos.listFiles();
+        
+        if (arquivos == null || arquivos.length == 0) {
+            Logger.log("Erro: Não há arquivos para análise.");
+            return;
+        }
+        
+        // Processar com função MÓDULO
+        List<Documento> docsModulo = new ArrayList<>();
+        for (File arquivo : arquivos) {
+            Documento doc = new Documento(arquivo.getPath(), HashTable.HASH_MODULO);
+            docsModulo.add(doc);
+        }
+        
+        // Processar com função MULTIPLICAÇÃO
+        List<Documento> docsMultiplicacao = new ArrayList<>();
+        for (File arquivo : arquivos) {
+            Documento doc = new Documento(arquivo.getPath(), HashTable.HASH_MULTIPLICACAO);
+            docsMultiplicacao.add(doc);
+        }
+        
+        // Coletar estatísticas agregadas
+        long colisoesMod = 0, colisoesMulti = 0;
+        long insercoesMod = 0, insercoesMulti = 0;
+        int maxChainMod = 0, maxChainMulti = 0;
+        int totalEmptyMod = 0, totalEmptyMulti = 0;
+        double somaLoadFactorMod = 0, somaLoadFactorMulti = 0;
+        
+        for (Documento doc : docsModulo) {
+            HashTable h = doc.getTabelaHash();
+            colisoesMod += h.getCollisionCount();
+            insercoesMod += h.getInsertionCount();
+            maxChainMod = Math.max(maxChainMod, h.getMaxChainLength());
+            totalEmptyMod += h.getEmptyBuckets();
+            somaLoadFactorMod += h.getLoadFactor();
+        }
+        
+        for (Documento doc : docsMultiplicacao) {
+            HashTable h = doc.getTabelaHash();
+            colisoesMulti += h.getCollisionCount();
+            insercoesMulti += h.getInsertionCount();
+            maxChainMulti = Math.max(maxChainMulti, h.getMaxChainLength());
+            totalEmptyMulti += h.getEmptyBuckets();
+            somaLoadFactorMulti += h.getLoadFactor();
+        }
+        
+        double taxaColisaoMod = (double) colisoesMod / insercoesMod * 100;
+        double taxaColisaoMulti = (double) colisoesMulti / insercoesMulti * 100;
+        double mediaLoadFactorMod = somaLoadFactorMod / docsModulo.size();
+        double mediaLoadFactorMulti = somaLoadFactorMulti / docsMultiplicacao.size();
+        
+        // Exibir tabela comparativa
+        Logger.log("╔════════════════════════════════════════════════════════════════════════════╗");
+        Logger.log("║                    COMPARAÇÃO DE FUNÇÕES HASH                              ║");
+        Logger.log("╠════════════════════════════════════╦═══════════════╦═══════════════════════╣");
+        Logger.log("║ MÉTRICA                            ║    MÓDULO     ║    MULTIPLICAÇÃO      ║");
+        Logger.log("╠════════════════════════════════════╬═══════════════╬═══════════════════════╣");
+        Logger.log(String.format("║ Total de Inserções                 ║ %13d ║ %21d ║", 
+            insercoesMod, insercoesMulti));
+        Logger.log(String.format("║ Total de Colisões                  ║ %13d ║ %21d ║", 
+            colisoesMod, colisoesMulti));
+        Logger.log(String.format("║ Taxa de Colisão                    ║ %12.2f%% ║ %20.2f%% ║", 
+            taxaColisaoMod, taxaColisaoMulti));
+        Logger.log("╠════════════════════════════════════╬═══════════════╬═══════════════════════╣");
+        Logger.log(String.format("║ Maior Cadeia (pior caso)           ║ %13d ║ %21d ║", 
+            maxChainMod, maxChainMulti));
+        Logger.log(String.format("║ Total de Buckets Vazios            ║ %13d ║ %21d ║", 
+            totalEmptyMod, totalEmptyMulti));
+        Logger.log(String.format("║ Fator de Carga Médio               ║ %13.4f ║ %21.4f ║", 
+            mediaLoadFactorMod, mediaLoadFactorMulti));
+        Logger.log("╚════════════════════════════════════╩═══════════════╩═══════════════════════╝");
+        Logger.log("");
     }
 }

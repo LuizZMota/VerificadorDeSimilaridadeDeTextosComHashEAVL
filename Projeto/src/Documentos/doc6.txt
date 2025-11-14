@@ -1,0 +1,1 @@
+Para obter um vocabulário significativo na análise de texto, é necessário um pré-processamento rigoroso. Isso inclui a conversão para minúsculas e a eliminação de stop words desnecessárias. Em seguida, a vetorização das frequências é realizada. O cálculo do cosseno é a métrica padrão para avaliar a similaridade entre documentos, pois normaliza a influência do tamanho do texto.

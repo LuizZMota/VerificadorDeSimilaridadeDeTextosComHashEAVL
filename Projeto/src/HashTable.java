@@ -19,6 +19,15 @@ public class HashTable {
     
     // Contador de colisões
     private int collisionCount;
+
+    // Contador de inserções (para calcular taxa de colisão)
+    private int insertionCount;
+    
+    // Contador de buscas realizadas (para análise de performance)
+    private int searchCount;
+    
+    // Soma dos comprimentos de cadeia percorridos (para tempo médio de busca)
+    private int totalChainLengthTraversed;
     
     // Constantes para identificar as funções hash
     public static final int HASH_MODULO = 1;
@@ -161,6 +170,10 @@ public class HashTable {
         return collisionCount;
     }
     
+    public double getCollisionRate() {
+        if (insertionCount == 0) return 0.0;
+        return (double) collisionCount / insertionCount;
+    }
 
     // Retorna a distribuição das chaves por bucket
     public int[] getDistribuicao() {

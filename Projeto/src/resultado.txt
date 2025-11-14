@@ -1,6 +1,20 @@
 === VERIFICADOR DE SIMILARIDADE DE TEXTOS ===
 
-Comparando: doc1.txt <-> doc2.txt
-Similaridade calculada: 0.40
-Métrica utilizada: Cosseno
+Total de documentos processados: 6
+Total de pares comparados: 15
+Função hash utilizada: hashModulo
+Métrica de similaridade: Cosseno
 
+Pares com similaridade >= 0.2
+-------------------------------------------------
+doc1.txt <-> doc2.txt = 0.40
+doc4.txt <-> doc3.txt = 0.35
+doc6.txt <-> doc5.txt = 0.32
+
+Pares com menor similaridade: 
+-------------------------------------------------
+doc6.txt <-> doc1.txt = 0.00
+doc6.txt <-> doc2.txt = 0.00
+doc5.txt <-> doc1.txt = 0.00
+doc5.txt <-> doc3.txt = 0.00
+doc5.txt <-> doc2.txt = 0.00

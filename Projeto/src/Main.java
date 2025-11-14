@@ -1,3 +1,8 @@
+// Arthur Rodrigues Lourenço Soares- 10434424
+// Luiz Alberto Silva Mota - 10436776
+
+
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

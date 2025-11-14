@@ -107,23 +107,29 @@ public class Main {
         }
         
         gerarAnaliseComparativa(diretorio);
+        
         Logger.close();
     }
     
     private static void gerarAnaliseComparativa(String diretorio) {
+        System.out.println("\n[Gerando análise comparativa de funções hash...]");
+        
         File pastaDocumentos = new File(diretorio);
         File[] arquivos = pastaDocumentos.listFiles();
         
         if (arquivos == null || arquivos.length == 0) {
+            System.out.println("Erro: Nenhum arquivo encontrado.");
             return;
         }
         
+        System.out.println("Processando " + arquivos.length + " documentos com função MÓDULO...");
         List<Documento> docsModulo = new ArrayList<>();
         for (File arquivo : arquivos) {
             Documento doc = new Documento(arquivo.getPath(), HashTable.HASH_MODULO);
             docsModulo.add(doc);
         }
         
+        System.out.println("Processando " + arquivos.length + " documentos com função MULTIPLICAÇÃO...");
         List<Documento> docsMultiplicacao = new ArrayList<>();
         for (File arquivo : arquivos) {
             Documento doc = new Documento(arquivo.getPath(), HashTable.HASH_MULTIPLICACAO);

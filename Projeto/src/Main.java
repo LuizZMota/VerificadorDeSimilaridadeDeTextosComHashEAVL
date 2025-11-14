@@ -108,81 +108,45 @@ public class Main {
         
         gerarAnaliseComparativa(diretorio);
         
+        System.out.println("\n=== ANÁLISE DE ROTAÇÕES AVL ===");
+        System.out.println(avlTree.exibirContadoresRotacao());
+        System.out.flush();
+        
         Logger.close();
     }
     
     private static void gerarAnaliseComparativa(String diretorio) {
-        System.out.println("\n[Gerando análise comparativa de funções hash...]");
-        
         File pastaDocumentos = new File(diretorio);
         File[] arquivos = pastaDocumentos.listFiles();
         
         if (arquivos == null || arquivos.length == 0) {
-            System.out.println("Erro: Nenhum arquivo encontrado.");
             return;
         }
         
-        System.out.println("Processando " + arquivos.length + " documentos com função MÓDULO...");
         List<Documento> docsModulo = new ArrayList<>();
         for (File arquivo : arquivos) {
-            Documento doc = new Documento(arquivo.getPath(), HashTable.HASH_MODULO);
-            docsModulo.add(doc);
+            docsModulo.add(new Documento(arquivo.getPath(), HashTable.HASH_MODULO));
         }
         
-        System.out.println("Processando " + arquivos.length + " documentos com função MULTIPLICAÇÃO...");
         List<Documento> docsMultiplicacao = new ArrayList<>();
         for (File arquivo : arquivos) {
-            Documento doc = new Documento(arquivo.getPath(), HashTable.HASH_MULTIPLICACAO);
-            docsMultiplicacao.add(doc);
+            docsMultiplicacao.add(new Documento(arquivo.getPath(), HashTable.HASH_MULTIPLICACAO));
         }
         
-        long colisoesMod = 0, colisoesMulti = 0;
-        long insercoesMod = 0, insercoesMulti = 0;
-        int maxChainMod = 0, maxChainMulti = 0;
-        int totalEmptyMod = 0, totalEmptyMulti = 0;
-        double somaLoadFactorMod = 0, somaLoadFactorMulti = 0;
+        int colisoesMod = 0;
+        int colisoesMulti = 0;
         
         for (Documento doc : docsModulo) {
-            HashTable h = doc.getTabelaHash();
-            colisoesMod += h.getCollisionCount();
-            insercoesMod += h.getInsertionCount();
-            maxChainMod = Math.max(maxChainMod, h.getMaxChainLength());
-            totalEmptyMod += h.getEmptyBuckets();
-            somaLoadFactorMod += h.getLoadFactor();
+            colisoesMod += doc.getTabelaHash().getCollisionCount();
         }
         
         for (Documento doc : docsMultiplicacao) {
-            HashTable h = doc.getTabelaHash();
-            colisoesMulti += h.getCollisionCount();
-            insercoesMulti += h.getInsertionCount();
-            maxChainMulti = Math.max(maxChainMulti, h.getMaxChainLength());
-            totalEmptyMulti += h.getEmptyBuckets();
-            somaLoadFactorMulti += h.getLoadFactor();
+            colisoesMulti += doc.getTabelaHash().getCollisionCount();
         }
         
-        double taxaColisaoMod = (double) colisoesMod / insercoesMod * 100;
-        double taxaColisaoMulti = (double) colisoesMulti / insercoesMulti * 100;
-        double mediaLoadFactorMod = somaLoadFactorMod / docsModulo.size();
-        double mediaLoadFactorMulti = somaLoadFactorMulti / docsMultiplicacao.size();
-        
-        System.out.println("\n╔════════════════════════════════════════════════════════════════════════════╗");
-        System.out.println("║                    COMPARAÇÃO DE FUNÇÕES HASH                              ║");
-        System.out.println("╠════════════════════════════════════╦═══════════════╦═══════════════════════╣");
-        System.out.println("║ MÉTRICA                            ║    MÓDULO     ║    MULTIPLICAÇÃO      ║");
-        System.out.println("╠════════════════════════════════════╬═══════════════╬═══════════════════════╣");
-        System.out.println(String.format("║ Total de Inserções                 ║ %13d ║ %21d ║", 
-            insercoesMod, insercoesMulti));
-        System.out.println(String.format("║ Total de Colisões                  ║ %13d ║ %21d ║", 
-            colisoesMod, colisoesMulti));
-        System.out.println(String.format("║ Taxa de Colisão                    ║ %12.2f%% ║ %20.2f%% ║", 
-            taxaColisaoMod, taxaColisaoMulti));
-        System.out.println("╠════════════════════════════════════╬═══════════════╬═══════════════════════╣");
-        System.out.println(String.format("║ Maior Cadeia (pior caso)           ║ %13d ║ %21d ║", 
-            maxChainMod, maxChainMulti));
-        System.out.println(String.format("║ Total de Buckets Vazios            ║ %13d ║ %21d ║", 
-            totalEmptyMod, totalEmptyMulti));
-        System.out.println(String.format("║ Fator de Carga Médio               ║ %13.4f ║ %21.4f ║", 
-            mediaLoadFactorMod, mediaLoadFactorMulti));
-        System.out.println("╚════════════════════════════════════╩═══════════════╩═══════════════════════╝\n");
+        System.out.println("\n=== ANÁLISE DE COLISÕES ===");
+        System.out.println("Colisões (Módulo): " + colisoesMod);
+        System.out.println("Colisões (Multiplicação): " + colisoesMulti);
+        System.out.flush();
     }
 }
